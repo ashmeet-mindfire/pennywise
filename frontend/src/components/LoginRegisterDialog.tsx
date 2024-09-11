@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import { LoginRegisterTabs } from "./LoginRegisterTabs";
 import { useState } from "react";
 

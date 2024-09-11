@@ -24,3 +24,13 @@ export const login = async (req: Request, res: Response) => {
 
   return res.status(StatusCodes.OK).json({ success: true, user });
 };
+
+export const getUserById = async (req: Request, res: Response) => {
+  const { user_id } = req.query;
+  if (!user_id) return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please provide user_id" });
+
+  const user = await UserModel.findById(user_id);
+  if (!user) return res.status(StatusCodes.NOT_FOUND).json({ msg: "User not found" });
+
+  return res.status(StatusCodes.OK).json({ user });
+};

@@ -1,3 +1,4 @@
+import { UserModel } from "../db/users";
 import { TransactionModel } from "../db/transaction";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -16,5 +17,15 @@ export const createTransaction = async (req: Request, res: Response) => {
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please provide all fields" });
 
   const transaction = await TransactionModel.create({ title, desc, type, amount, category_id, user_id, date_time });
+
+  const user = await UserModel.findById(user_id);
+  if (type === "expense") {
+    user.set({ total_expenses: user.total_expenses + amount });
+    await user.save();
+  } else {
+    user.set({ total_income: user.total_income + amount });
+    await user.save();
+  }
+
   return res.status(StatusCodes.CREATED).json({ msg: "Transaction created successfully", transactionId: transaction._id });
 };

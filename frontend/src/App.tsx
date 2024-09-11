@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Navbar";
 import { UserContext } from "./context/userContext";
 import { IUserContext } from "./lib/types";
-import Dashboard from "./components/Dashboard/Dashboard";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const { user } = useContext(UserContext) as IUserContext;

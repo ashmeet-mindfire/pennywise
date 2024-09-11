@@ -4,12 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import { Toaster } from "react-hot-toast";
 import UserProvider from "./context/userContext.tsx";
+import TransactionProvider from "./context/TransactionContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Toaster />
     <UserProvider>
-      <App />
+      <TransactionProvider>
+        <App />
+      </TransactionProvider>
     </UserProvider>
   </StrictMode>
 );

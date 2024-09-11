@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import LoginRegisterDialog from "../LoginRegisterDialog/LoginRegisterDialog";
+import LoginRegisterDialog from "./LoginRegisterDialog";
 import { UserContext } from "@/context/userContext";
 import { IUserContext } from "@/lib/types";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 
 const Navbar = () => {

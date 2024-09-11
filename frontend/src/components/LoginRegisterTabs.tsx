@@ -1,11 +1,11 @@
-import { loginUser, registerUser } from "@/api/user";
+import { registerUser } from "@/api/user";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserContext } from "@/context/userContext";
-import { IUser, IUserContext, IUserDTO } from "@/lib/types";
+import { IUserContext } from "@/lib/types";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -15,32 +15,12 @@ export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) 
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const { loginUser: login } = useContext(UserContext) as IUserContext;
+  const { login } = useContext(UserContext) as IUserContext;
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) return toast.error("Please fill all mandatory fields");
-
-    const toastId = toast.loading("Logging In");
-    loginUser(email, password)
-      .then((res: any) => {
-        toast.success("Successfully logged in", { id: toastId });
-        const resUser: IUserDTO = res?.data?.user;
-        if (resUser) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          const user: IUser = {
-            id: resUser._id,
-            name: resUser.name,
-            totalExpenses: resUser.total_expenses,
-            totalIncome: resUser.total_income,
-          };
-          login(user);
-        }
-        closeDialog();
-      })
-      .catch((err: any) => {
-        toast.error(err?.response?.data?.msg ?? "Something went wrong, please try later", { id: toastId });
-        console.log(err);
-      });
+    const success = await login(email, password);
+    if (success) closeDialog();
   };
 
   const handleRegister = () => {
@@ -49,20 +29,10 @@ export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) 
 
     const toastId = toast.loading("Logging In");
     registerUser(name, email, password)
-      .then((res) => {
+      .then(async () => {
         toast.success("Successfully registered", { id: toastId });
-        const resUser: IUserDTO = res?.data?.user;
-        if (resUser) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          const user: IUser = {
-            id: resUser._id,
-            name: resUser.name,
-            totalExpenses: resUser.total_expenses,
-            totalIncome: resUser.total_income,
-          };
-          login(user);
-        }
-        closeDialog();
+        const success = await login(email, password);
+        if (success) closeDialog();
       })
       .catch((err) => {
         toast.error(err?.response?.data?.msg ?? "Something went wrong, please try later", { id: toastId });

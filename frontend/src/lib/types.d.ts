@@ -14,6 +14,24 @@ export interface IUser {
 
 export interface IUserContext {
   user: IUser | null;
-  loginUser: (user: IUser) => void;
+  login: (email: string, password: string) => Promise<boolean>;
   logoutUser: () => void;
+  getUserDetails: () => void;
+}
+
+export interface ITransactionDTO {
+  title: string;
+  desc: string;
+  date_time: string;
+  category_id: string;
+  type: string;
+  user_id: string;
+  _id: string;
+  amount: number;
+}
+
+export interface ITransactionContext {
+  transactions: ITransactionDTO[];
+  handleGetTransactions: () => void;
+  transactionsLoading: boolean;
 }
