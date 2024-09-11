@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserContext } from "@/context/userContext";
-import { IUserContext } from "@/lib/types";
+import { IUser, IUserContext, IUserDTO } from "@/lib/types";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -24,9 +24,16 @@ export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) 
     loginUser(email, password)
       .then((res: any) => {
         toast.success("Successfully logged in", { id: toastId });
-        if (res?.data?.user) {
+        const resUser: IUserDTO = res?.data?.user;
+        if (resUser) {
           localStorage.setItem("user", JSON.stringify(res.data.user));
-          login(res.data.user);
+          const user: IUser = {
+            id: resUser._id,
+            name: resUser.name,
+            totalExpenses: resUser.total_expenses,
+            totalIncome: resUser.total_income,
+          };
+          login(user);
         }
         closeDialog();
       })
@@ -44,7 +51,17 @@ export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) 
     registerUser(name, email, password)
       .then((res) => {
         toast.success("Successfully registered", { id: toastId });
-        console.log(res);
+        const resUser: IUserDTO = res?.data?.user;
+        if (resUser) {
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          const user: IUser = {
+            id: resUser._id,
+            name: resUser.name,
+            totalExpenses: resUser.total_expenses,
+            totalIncome: resUser.total_income,
+          };
+          login(user);
+        }
         closeDialog();
       })
       .catch((err) => {
