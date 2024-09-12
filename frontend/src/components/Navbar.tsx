@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full px-6 py-4 flex justify-between items-center shadow-lg">
+    <nav className="w-full px-6 py-4 flex justify-between items-center border-b ">
       <div>
         <p className="font-['Pacifico'] text-4xl">Pennywise</p>
       </div>

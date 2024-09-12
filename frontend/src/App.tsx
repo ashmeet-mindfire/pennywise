@@ -7,7 +7,7 @@ import Dashboard from "./components/Dashboard";
 function App() {
   const { user } = useContext(UserContext) as IUserContext;
   return (
-    <div className="w-screen min-h-screen">
+    <div className="w-full min-h-screen">
       <Navbar />
       {user && <Dashboard />}
     </div>

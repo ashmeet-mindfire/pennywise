@@ -30,7 +30,13 @@ const TransactionsTable = () => {
               <TableCell>{transaction.desc}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
               <TableCell>{transaction.date_time}</TableCell>
-              <TableCell className="text-right capitalize">{transaction.type}</TableCell>
+              <TableCell
+                className={`text-right capitalize font-semibold ${
+                  transaction.type === "expense" ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {transaction.type}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
