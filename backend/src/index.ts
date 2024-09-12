@@ -6,6 +6,7 @@ import cors from "cors";
 import "express-async-errors";
 import authRouter from "./routes/authRoutes";
 import transactionRouter from "./routes/transactionRoutes";
+import categoryRouter from "./routes/categoryRoutes";
 import connectDB from "./db/connect";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/transaction", transactionRouter);
+app.use("/api/v1/category", categoryRouter);
 
 const start = async () => {
   try {
