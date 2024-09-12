@@ -5,9 +5,10 @@ const TransactionSchema = new mongoose.Schema({
   desc: { type: String, required: true },
   type: { type: String, required: true },
   amount: { type: Number, required: false },
-  category_id: { type: String, required: true },
+  category: { type: String, required: true },
   user_id: { type: String, required: true },
   date_time: { type: String, required: true },
+  created_at: { type: Date, required: true, default: Date.now },
 });
 
 export const TransactionModel = mongoose.model("Transaction", TransactionSchema);

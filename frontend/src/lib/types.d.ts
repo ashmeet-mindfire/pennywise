@@ -17,6 +17,8 @@ export interface IUserContext {
   login: (email: string, password: string) => Promise<boolean>;
   logoutUser: () => void;
   getUserDetails: () => void;
+  categories: string[];
+  fetchCategories: (user_id: string) => void;
 }
 
 export interface ITransactionDTO {
@@ -34,4 +36,11 @@ export interface ITransactionContext {
   transactions: ITransactionDTO[];
   handleGetTransactions: () => void;
   transactionsLoading: boolean;
+}
+
+export interface CategoryDTO {
+  name: string;
+  _id: string;
+  is_created_by_user: boolean;
+  user_id: string | null;
 }

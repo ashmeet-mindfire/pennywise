@@ -1,5 +1,6 @@
+import { getCategories } from "@/api/categories";
 import { getUserById, loginUser } from "@/api/user";
-import { IUser, IUserContext, IUserDTO } from "@/lib/types";
+import { CategoryDTO, IUser, IUserContext, IUserDTO } from "@/lib/types";
 import * as React from "react";
 import toast from "react-hot-toast";
 
@@ -7,6 +8,7 @@ export const UserContext = React.createContext<IUserContext | null>(null);
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = React.useState<IUser | null>(null);
+  const [categories, setCategories] = React.useState<string[]>([]);
 
   const login = async (email: string, password: string) => {
     const toastId = toast.loading("Signing In");
@@ -16,6 +18,8 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       toast.success("Successfully logged in", { id: toastId });
       success = true;
       const resUser: IUserDTO = data?.user;
+      fetchCategories(resUser._id);
+
       if (resUser) {
         localStorage.setItem("user", JSON.stringify(resUser));
         const user: IUser = {
@@ -53,7 +57,19 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       }
     });
   };
-  return <UserContext.Provider value={{ user, login, logoutUser, getUserDetails }}>{children}</UserContext.Provider>;
+
+  const fetchCategories = (userId: string) => {
+    getCategories(userId).then((res) => {
+      const newCategories: string[] = [];
+      res?.data?.categories.map((category: CategoryDTO) => newCategories.push(category.name));
+      setCategories(newCategories);
+    });
+  };
+  return (
+    <UserContext.Provider value={{ user, login, logoutUser, getUserDetails, categories, fetchCategories }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export default UserProvider;

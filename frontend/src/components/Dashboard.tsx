@@ -31,10 +31,10 @@ const Dashboard = () => {
       <div className="flex gap-8 mt-10">
         <div className="w-full">
           <div className="flex justify-between mb-4">
-            <h2 className="text-2xl font-semibold">Transactions</h2>
+            <h2 className="text-2xl font-semibold">Recent Transactions</h2>
             <AddTransactionDialog />
           </div>
-          <ScrollArea className="h-[250px] px-4">
+          <ScrollArea className="h-[250px]">
             <TransactionsTable />
           </ScrollArea>
         </div>

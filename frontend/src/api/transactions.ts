@@ -14,5 +14,5 @@ export const addTransaction = (
   category: string,
   userId: string
 ) => {
-  return axios.post(ADD_TRANSACTIONS, { title, desc, amount, type, date_time: date, category_id: category, user_id: userId });
+  return axios.post(ADD_TRANSACTIONS, { title, desc, amount, type, date_time: date, category, user_id: userId });
 };

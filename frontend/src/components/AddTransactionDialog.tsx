@@ -12,6 +12,8 @@ import { UserContext } from "@/context/userContext";
 import { ITransactionContext, IUserContext } from "@/lib/types";
 import toast from "react-hot-toast";
 import { TransactionContext } from "@/context/TransactionContext";
+import CategoryDropdown from "./CategoryDropdown";
+import AddCategoryDialog from "./AddCategoryDialog";
 
 const AddTransactionDialog = () => {
   const [open, setOpen] = useState(false);
@@ -21,17 +23,28 @@ const AddTransactionDialog = () => {
   const [desc, setDesc] = useState("");
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
   const [date, setDate] = useState<Date>();
 
   const { user, getUserDetails } = useContext(UserContext) as IUserContext;
   const { handleGetTransactions } = useContext(TransactionContext) as ITransactionContext;
 
+  const resetData = () => {
+    setTitle("");
+    setDesc("");
+    setAmount(0);
+    setType("");
+    setCategory("");
+    setDate(undefined);
+  };
+
   const handleAdd = () => {
     console.log(title, desc, amount, type, date);
     const toastId = toast.loading("Adding transaction");
-    addTransaction(title, desc, amount, type, date?.toLocaleDateString() as string, "category_id", user?.id as string)
+    addTransaction(title, desc, amount, type, date?.toLocaleDateString() as string, category, user?.id as string)
       .then((res) => {
         toast.success(res?.data?.msg, { id: toastId });
+        resetData();
         closeDialog();
         handleGetTransactions();
         getUserDetails();
@@ -58,7 +71,7 @@ const AddTransactionDialog = () => {
               </div>
               <div className="space-y-1">
                 <Label htmlFor="desc">Description</Label>
-                <Textarea rows={8} id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} />
+                <Textarea rows={12} id="desc" value={desc} onChange={(e) => setDesc(e.target.value)} />
               </div>
             </div>
             <div className="w-1/3 flex flex-col justify-between">
@@ -70,6 +83,15 @@ const AddTransactionDialog = () => {
                 <div className="space-y-1">
                   <Label htmlFor="type">Select Type</Label>
                   <TypeDropdown type={type} setType={setType} />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="type">Select Category</Label>
+                  <div className="flex gap-2 items-center">
+                    <div className="flex-grow">
+                      <CategoryDropdown category={category} setCategory={setCategory} />
+                    </div>
+                    <AddCategoryDialog />
+                  </div>
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="type">Select Date</Label>

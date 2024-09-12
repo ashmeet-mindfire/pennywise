@@ -5,20 +5,20 @@ import { StatusCodes } from "http-status-codes";
 import { documentNotFound } from "../utils";
 
 export const getTransactions = async (req: Request, res: Response) => {
-  const { user_id } = req.query;
+  const { user_id, limit } = req.query;
   if (!user_id) return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please provide user_id" });
 
-  const transactions = await TransactionModel.find({ user_id });
+  const transactions = await TransactionModel.find({ user_id }).sort({ created_at: "desc" });
   if (!transactions) return documentNotFound("Transactions", res);
   return res.status(StatusCodes.OK).json({ msg: "Transactions fetched successfully", transactions });
 };
 
 export const createTransaction = async (req: Request, res: Response) => {
-  const { title, desc, type, amount, category_id, user_id, date_time } = req.body;
-  if (!title || !desc || !type || !amount || !category_id || !user_id || !date_time)
+  const { title, desc, type, amount, category, user_id, date_time } = req.body;
+  if (!title || !desc || !type || !amount || !category || !user_id || !date_time)
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please provide all fields" });
 
-  const transaction = await TransactionModel.create({ title, desc, type, amount, category_id, user_id, date_time });
+  const transaction = await TransactionModel.create({ title, desc, type, amount, category, user_id, date_time });
 
   const user = await UserModel.findById(user_id);
   if (type === "expense") {
