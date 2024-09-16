@@ -1,15 +1,13 @@
-import { useContext } from "react";
 import Navbar from "./components/Navbar";
-import { UserContext } from "./context/userContext";
-import { IUserContext } from "./lib/types";
-import Dashboard from "./components/Dashboard";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  const { user } = useContext(UserContext) as IUserContext;
   return (
     <div className="w-full min-h-screen">
       <Navbar />
-      {user && <Dashboard />}
+      <div className=" py-10 px-24">
+        <Outlet />
+      </div>
     </div>
   );
 }

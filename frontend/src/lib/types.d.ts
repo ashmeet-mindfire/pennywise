@@ -25,7 +25,7 @@ export interface ITransactionDTO {
   title: string;
   desc: string;
   date_time: string;
-  category_id: string;
+  category: string;
   type: string;
   user_id: string;
   _id: string;
@@ -34,7 +34,7 @@ export interface ITransactionDTO {
 
 export interface ITransactionContext {
   transactions: ITransactionDTO[];
-  handleGetTransactions: () => void;
+  handleGetTransactions: (limit?: number) => void;
   transactionsLoading: boolean;
 }
 
@@ -43,4 +43,10 @@ export interface CategoryDTO {
   _id: string;
   is_created_by_user: boolean;
   user_id: string | null;
+}
+
+export interface ICategoryExpensesDTO {
+  name: string;
+  amount: number;
+  type: string;
 }

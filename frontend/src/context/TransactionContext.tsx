@@ -12,9 +12,9 @@ const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const { user, getUserDetails } = React.useContext(UserContext) as IUserContext;
 
-  const handleGetTransactions = () => {
+  const handleGetTransactions = (limit?: number) => {
     setTransactionsLoading(true);
-    getTransactions(user?.id as string)
+    getTransactions(user?.id as string, limit)
       .then((res) => {
         setTransactions(res?.data?.transactions);
         getUserDetails();

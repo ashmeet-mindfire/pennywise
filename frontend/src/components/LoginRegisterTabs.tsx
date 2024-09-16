@@ -8,6 +8,7 @@ import { UserContext } from "@/context/userContext";
 import { IUserContext } from "@/lib/types";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) {
   const [email, setEmail] = useState("");
@@ -16,11 +17,15 @@ export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) 
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const { login } = useContext(UserContext) as IUserContext;
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !password) return toast.error("Please fill all mandatory fields");
     const success = await login(email, password);
-    if (success) closeDialog();
+    if (success) {
+      closeDialog();
+      navigate("dashboard");
+    }
   };
 
   const handleRegister = () => {

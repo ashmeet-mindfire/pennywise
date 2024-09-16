@@ -3,16 +3,17 @@ import { TransactionContext } from "@/context/TransactionContext";
 import { ITransactionContext } from "@/lib/types";
 import { useContext, useEffect } from "react";
 
-const TransactionsTable = () => {
+const RecentTransactionsTable = () => {
   const { transactions, transactionsLoading, handleGetTransactions } = useContext(TransactionContext) as ITransactionContext;
 
   useEffect(() => {
-    handleGetTransactions();
+    handleGetTransactions(5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Table>
-      <TableCaption>A list of your transactions.</TableCaption>
+      <TableCaption>A list of your recent transactions.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Title</TableHead>
@@ -65,4 +66,4 @@ const TransactionsTable = () => {
   );
 };
 
-export default TransactionsTable;
+export default RecentTransactionsTable;

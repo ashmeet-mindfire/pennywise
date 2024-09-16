@@ -8,6 +8,7 @@ import authRouter from "./routes/authRoutes";
 import transactionRouter from "./routes/transactionRoutes";
 import categoryRouter from "./routes/categoryRoutes";
 import connectDB from "./db/connect";
+import swaggerDocs from "./swagger";
 
 const app = express();
 const port = 5000;
@@ -24,6 +25,7 @@ const start = async () => {
     app.listen(port, () => {
       console.log("Server started on port", port);
     });
+    swaggerDocs(app, port);
     await connectDB();
   } catch (e) {
     console.log(e);

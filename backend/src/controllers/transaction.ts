@@ -8,7 +8,9 @@ export const getTransactions = async (req: Request, res: Response) => {
   const { user_id, limit } = req.query;
   if (!user_id) return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please provide user_id" });
 
-  const transactions = await TransactionModel.find({ user_id }).sort({ created_at: "desc" });
+  const transactions = await TransactionModel.find({ user_id })
+    .sort({ created_at: "desc" })
+    .limit(parseInt(limit as string));
   if (!transactions) return documentNotFound("Transactions", res);
   return res.status(StatusCodes.OK).json({ msg: "Transactions fetched successfully", transactions });
 };
@@ -65,7 +67,7 @@ export const updateTransaction = async (req: Request, res: Response) => {
 };
 
 export const deleteTransaction = async (req: Request, res: Response) => {
-  const { transaction_id, user_id } = req.body;
+  const { transaction_id, user_id } = req.query;
 
   if (!transaction_id || !user_id)
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "transaction_id or user_id missing from body" });

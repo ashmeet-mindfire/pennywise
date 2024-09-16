@@ -4,6 +4,7 @@ import { UserContext } from "@/context/userContext";
 import { IUserContext } from "@/lib/types";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(UserContext) as IUserContext;
@@ -18,8 +19,17 @@ const Navbar = () => {
       <div>
         <p className="font-['Pacifico'] text-4xl">Pennywise</p>
       </div>
-      <div className="flex gap-8 items-center">
-        <p>Dashboard</p>
+      <div className="flex gap-4 items-center">
+        <Link to={"dashboard"}>
+          <Button variant="link" className="text-lg">
+            Dashboard
+          </Button>
+        </Link>
+        <Link to={"transactions"}>
+          <Button variant="link" className="text-lg">
+            Transactions
+          </Button>
+        </Link>
         {user ? <Button onClick={handleLogout}>Sign Out</Button> : <LoginRegisterDialog />}
       </div>
     </nav>
