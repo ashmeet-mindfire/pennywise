@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { TransactionContext } from "@/context/TransactionContext";
 import { ITransactionContext } from "@/lib/types";
+import { formatDateTime } from "@/lib/utils";
 import { useContext, useEffect } from "react";
 
 const RecentTransactionsTable = () => {
@@ -30,7 +31,7 @@ const RecentTransactionsTable = () => {
               <TableCell className="font-medium">{transaction.title}</TableCell>
               <TableCell>{transaction.desc}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
-              <TableCell>{transaction.date_time}</TableCell>
+              <TableCell>{formatDateTime(new Date(transaction.date_time))}</TableCell>
               <TableCell
                 className={`text-right capitalize font-semibold ${
                   transaction.type === "expense" ? "text-red-500" : "text-green-500"

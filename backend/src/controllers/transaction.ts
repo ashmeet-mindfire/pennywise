@@ -2,7 +2,8 @@ import { UserModel } from "../db/users";
 import { TransactionModel } from "../db/transaction";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { documentNotFound } from "../utils";
+import { documentNotFound, paramsNotFound } from "../utils";
+import { MONTH } from "../constants";
 
 export const getTransactions = async (req: Request, res: Response) => {
   const { user_id, limit } = req.query;
@@ -20,7 +21,15 @@ export const createTransaction = async (req: Request, res: Response) => {
   if (!title || !desc || !type || !amount || !category || !user_id || !date_time)
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Please provide all fields" });
 
-  const transaction = await TransactionModel.create({ title, desc, type, amount, category, user_id, date_time });
+  const transaction = await TransactionModel.create({
+    title,
+    desc,
+    type,
+    amount,
+    category,
+    user_id,
+    date_time: new Date(date_time),
+  });
 
   const user = await UserModel.findById(user_id);
   if (type === "expense") {
@@ -85,4 +94,28 @@ export const deleteTransaction = async (req: Request, res: Response) => {
 
   await user.save();
   return res.status(StatusCodes.OK).json({ msg: "Transaction deleted successfully" });
+};
+
+export const getTransactionsByTimePeriod = async (req: Request, res: Response) => {
+  const { time_period, value } = req.query;
+  if (!time_period || !value) return paramsNotFound("time_period/value", res);
+  if (time_period === "month" && MONTH[value as keyof typeof MONTH]) {
+    const startDate = new Date(2024, MONTH[value as keyof typeof MONTH] - 1, 1);
+    const endDate = new Date(2024, MONTH[value as keyof typeof MONTH], 1);
+
+    const transactions = await TransactionModel.find({
+      date_time: { $gte: startDate, $lt: endDate },
+    });
+
+    return res.status(StatusCodes.OK).json({ transactions });
+  } else if (time_period === "day") {
+    const startDate = new Date(value as string);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 1);
+    const transactions = await TransactionModel.find({
+      date_time: { $gte: startDate, $lt: endDate },
+    });
+
+    return res.status(StatusCodes.OK).json({ transactions });
+  } else return res.status(StatusCodes.OK).json({});
 };

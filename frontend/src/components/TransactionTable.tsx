@@ -7,6 +7,7 @@ import { Trash2 } from "lucide-react";
 import { UserContext } from "@/context/userContext";
 import { deleteTransaction } from "@/api/transactions";
 import toast from "react-hot-toast";
+import { formatDateTime } from "@/lib/utils";
 
 const TransactionsTable = () => {
   const { transactions, transactionsLoading, handleGetTransactions } = useContext(TransactionContext) as ITransactionContext;
@@ -53,7 +54,7 @@ const TransactionsTable = () => {
               <TableCell className="font-medium">{transaction.title}</TableCell>
               <TableCell>{transaction.desc}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
-              <TableCell>{transaction.date_time}</TableCell>
+              <TableCell>{formatDateTime(new Date(transaction.date_time))}</TableCell>
               <TableCell>{transaction.category}</TableCell>
               <TableCell
                 className={`capitalize font-semibold ${transaction.type === "expense" ? "text-red-500" : "text-green-500"}`}

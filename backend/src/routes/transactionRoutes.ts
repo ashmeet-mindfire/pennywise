@@ -1,5 +1,11 @@
 import express from "express";
-import { createTransaction, deleteTransaction, getTransactions, updateTransaction } from "../controllers/transaction";
+import {
+  createTransaction,
+  deleteTransaction,
+  getTransactions,
+  getTransactionsByTimePeriod,
+  updateTransaction,
+} from "../controllers/transaction";
 
 const router = express.Router();
 
@@ -136,5 +142,7 @@ router.put("/", updateTransaction);
  *         description: Transaction deleted successfully
  */
 router.delete("/", deleteTransaction);
+
+router.get("/time-period", getTransactionsByTimePeriod);
 
 export default router;
