@@ -143,6 +143,6 @@ router.put("/", updateTransaction);
  */
 router.delete("/", deleteTransaction);
 
-router.get("/time-period", getTransactionsByTimePeriod);
+router.get("/chart", getTransactionsByTimePeriod);
 
 export default router;

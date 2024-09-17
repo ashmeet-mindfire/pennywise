@@ -99,7 +99,54 @@ export const deleteTransaction = async (req: Request, res: Response) => {
 export const getTransactionsByTimePeriod = async (req: Request, res: Response) => {
   const { time_period, value } = req.query;
   if (!time_period || !value) return paramsNotFound("time_period/value", res);
-  if (time_period === "month" && MONTH[value as keyof typeof MONTH]) {
+  if (time_period === "year") {
+    const result = await TransactionModel.aggregate([
+      {
+        $project: {
+          year: { $year: "$date_time" },
+          month: { $month: "$date_time" },
+          type: 1,
+          amount: 1,
+        },
+      },
+      {
+        $group: {
+          _id: { year: "$year", month: "$month", type: "$type" },
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+      {
+        $group: {
+          _id: { year: "$_id.year", month: "$_id.month" },
+          income: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.type", "income"] }, "$totalAmount", 0],
+            },
+          },
+          expense: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.type", "expense"] }, "$totalAmount", 0],
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          "_id.month": 1,
+        },
+      },
+      {
+        $project: {
+          year: "$_id.year",
+          month: "$_id.month",
+          income: 1,
+          expense: 1,
+          _id: 0,
+        },
+      },
+    ]);
+    return res.status(StatusCodes.OK).json({ result });
+  } else if (time_period === "month" && MONTH[value as keyof typeof MONTH]) {
     const startDate = new Date(2024, MONTH[value as keyof typeof MONTH] - 1, 1);
     const endDate = new Date(2024, MONTH[value as keyof typeof MONTH], 1);
 

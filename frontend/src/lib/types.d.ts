@@ -50,3 +50,9 @@ export interface ICategoryExpensesDTO {
   amount: number;
   type: string;
 }
+
+export interface IChartData {
+  month: string;
+  expense: number;
+  income: number;
+}

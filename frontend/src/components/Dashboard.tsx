@@ -6,6 +6,7 @@ import AddTransactionDialog from "./AddTransactionDialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getCategoryExpenses } from "@/api/categories";
 import { Progress } from "@/components/ui/progress";
+import { Chart } from "./Chart";
 
 const Dashboard = () => {
   const [categoryExpenses, setCategoryExpenses] = useState<ICategoryExpensesDTO[]>([]);
@@ -98,6 +99,9 @@ const Dashboard = () => {
               ))}
           </div>
         </div>
+      </div>
+      <div className="">
+        <Chart />
       </div>
     </div>
   );

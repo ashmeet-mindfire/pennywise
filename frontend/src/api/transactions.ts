@@ -1,4 +1,4 @@
-import { ADD_TRANSACTIONS, GET_TRANSACTIONS, UPDATE_TRANSACTIONS } from "@/constants/urls";
+import { ADD_TRANSACTIONS, GET_CHART_DATA, GET_TRANSACTIONS, UPDATE_TRANSACTIONS } from "@/constants/urls";
 import axios from "axios";
 
 export const getTransactions = (userId: string, limit?: number) => {
@@ -41,4 +41,8 @@ export const updateTransaction = (
 
 export const deleteTransaction = (transaction_id: string, user_id: string) => {
   return axios.delete(GET_TRANSACTIONS, { params: { transaction_id, user_id } });
+};
+
+export const getChartData = (time_period: string, value: string) => {
+  return axios.get(GET_CHART_DATA, { params: { time_period, value } });
 };
