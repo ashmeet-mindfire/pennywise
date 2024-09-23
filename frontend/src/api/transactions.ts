@@ -43,6 +43,6 @@ export const deleteTransaction = (transaction_id: string, user_id: string) => {
   return axios.delete(GET_TRANSACTIONS, { params: { transaction_id, user_id } });
 };
 
-export const getChartData = (time_period: string, value: string) => {
-  return axios.get(GET_CHART_DATA, { params: { time_period, value } });
+export const getChartData = (time_period: string, value: string, user_id: string) => {
+  return axios.get(GET_CHART_DATA, { params: { time_period, value, user_id } });
 };

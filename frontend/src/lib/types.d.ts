@@ -52,7 +52,7 @@ export interface ICategoryExpensesDTO {
 }
 
 export interface IChartData {
-  month: string;
+  xAxisValue: string;
   expense: number;
   income: number;
 }

@@ -8,3 +8,7 @@ export const documentNotFound = (docTitle: string, res: Response) => {
 export const paramsNotFound = (params: string, res: Response) => {
   return res.status(StatusCodes.BAD_REQUEST).json({ msg: `${params} not found in body` });
 };
+
+export const invalidParams = (params: string, res: Response) => {
+  return res.status(StatusCodes.BAD_REQUEST).json({ msg: `Invalid ${params} value` });
+};

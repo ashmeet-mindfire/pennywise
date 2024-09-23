@@ -19,17 +19,22 @@ const Navbar = () => {
       <div>
         <p className="font-['Pacifico'] text-4xl">Pennywise</p>
       </div>
+
       <div className="flex gap-4 items-center">
-        <Link to={"dashboard"}>
-          <Button variant="link" className="text-lg">
-            Dashboard
-          </Button>
-        </Link>
-        <Link to={"transactions"}>
-          <Button variant="link" className="text-lg">
-            Transactions
-          </Button>
-        </Link>
+        {user && (
+          <>
+            <Link to={"dashboard"}>
+              <Button variant="link" className="text-lg">
+                Dashboard
+              </Button>
+            </Link>
+            <Link to={"transactions"}>
+              <Button variant="link" className="text-lg">
+                Transactions
+              </Button>
+            </Link>
+          </>
+        )}
         {user ? <Button onClick={handleLogout}>Sign Out</Button> : <LoginRegisterDialog />}
       </div>
     </nav>

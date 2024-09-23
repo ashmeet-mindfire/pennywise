@@ -46,15 +46,15 @@ const Dashboard = () => {
             <h2 className="text-2xl font-semibold">Recent Transactions</h2>
             <AddTransactionDialog />
           </div>
-          <ScrollArea className="h-[250px]">
+          <ScrollArea className="h-[250px] px-4">
             <RecentTransactionsTable />
           </ScrollArea>
         </div>
         {/* <ExpenseCalendar /> */}
       </div>
-      <div className="flex gap-4 min-h-[300px]">
+      <div className="flex gap-4 min-h-[300px] mt-10">
         <div className="w-full border rounded p-4">
-          <p className="text-3xl font-bold w-full border-b pb-3">Expenses By Category</p>
+          <p className="text-3xl font-semibold w-full border-b pb-3">Expenses By Category</p>
           <div className="mt-4">
             {categoryExpenses
               .filter((category) => category.type === "expense")
@@ -77,7 +77,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="w-full border rounded p-4">
-          <p className="text-3xl font-bold w-full border-b pb-3">Incomes By Category</p>
+          <p className="text-3xl font-semibold w-full border-b pb-3">Incomes By Category</p>
           <div className="mt-4">
             {categoryExpenses
               .filter((category) => category.type === "income")
@@ -100,7 +100,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="">
+      <div className="mt-10">
         <Chart />
       </div>
     </div>

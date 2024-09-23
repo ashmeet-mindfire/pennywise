@@ -2,7 +2,7 @@ import { UserModel } from "../db/users";
 import { TransactionModel } from "../db/transaction";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { documentNotFound, paramsNotFound } from "../utils";
+import { documentNotFound, invalidParams, paramsNotFound } from "../utils";
 import { MONTH } from "../constants";
 
 export const getTransactions = async (req: Request, res: Response) => {
@@ -97,10 +97,32 @@ export const deleteTransaction = async (req: Request, res: Response) => {
 };
 
 export const getTransactionsByTimePeriod = async (req: Request, res: Response) => {
-  const { time_period, value } = req.query;
+  const { time_period, value, user_id } = req.query;
   if (!time_period || !value) return paramsNotFound("time_period/value", res);
+  if (time_period !== "year" && time_period !== "month") return invalidParams("time_period", res);
   if (time_period === "year") {
+    const startDate = new Date(parseInt(value as string), 1, 1);
+    const endDate = new Date(parseInt(value as string), 12, 31);
     const result = await TransactionModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              user_id: user_id,
+            },
+            {
+              date_time: {
+                $gte: startDate,
+              },
+            },
+            {
+              date_time: {
+                $lte: endDate,
+              },
+            },
+          ],
+        },
+      },
       {
         $project: {
           year: { $year: "$date_time" },
@@ -145,24 +167,95 @@ export const getTransactionsByTimePeriod = async (req: Request, res: Response) =
         },
       },
     ]);
-    return res.status(StatusCodes.OK).json({ result });
+    const data: any[] = [];
+    let resultIdx = 0;
+    for (let i = 1; i <= 12; i++) {
+      const resultObj = result[resultIdx];
+      if (resultIdx !== result.length && resultObj.month === i) {
+        data.push(resultObj);
+        resultIdx += 1;
+      } else {
+        data.push({ income: 0, expense: 0, month: i });
+      }
+    }
+    return res.status(StatusCodes.OK).json({ result: data });
   } else if (time_period === "month" && MONTH[value as keyof typeof MONTH]) {
     const startDate = new Date(2024, MONTH[value as keyof typeof MONTH] - 1, 1);
     const endDate = new Date(2024, MONTH[value as keyof typeof MONTH], 1);
 
-    const transactions = await TransactionModel.find({
-      date_time: { $gte: startDate, $lt: endDate },
-    });
-
-    return res.status(StatusCodes.OK).json({ transactions });
-  } else if (time_period === "day") {
-    const startDate = new Date(value as string);
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 1);
-    const transactions = await TransactionModel.find({
-      date_time: { $gte: startDate, $lt: endDate },
-    });
-
-    return res.status(StatusCodes.OK).json({ transactions });
-  } else return res.status(StatusCodes.OK).json({});
+    const result = await TransactionModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              user_id: user_id,
+            },
+            {
+              date_time: {
+                $gte: startDate,
+              },
+            },
+            {
+              date_time: {
+                $lte: endDate,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          date: "$date_time",
+          type: 1,
+          amount: 1,
+        },
+      },
+      {
+        $group: {
+          _id: { date: "$date", type: "$type" },
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+      {
+        $group: {
+          _id: { date: "$_id.date" },
+          income: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.type", "income"] }, "$totalAmount", 0],
+            },
+          },
+          expense: {
+            $sum: {
+              $cond: [{ $eq: ["$_id.type", "expense"] }, "$totalAmount", 0],
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          "_id.date": 1,
+        },
+      },
+      {
+        $project: {
+          date: "$_id.date",
+          income: 1,
+          expense: 1,
+          _id: 0,
+        },
+      },
+    ]);
+    const data = [];
+    const dateFilled: boolean[] = new Array(31).fill(false);
+    for (let transaction of result) {
+      const date = transaction.date.getDate();
+      dateFilled[date - 1] = true;
+      data.push({ date: date, income: transaction.income, expense: transaction.expense });
+    }
+    for (let i = 0; i < dateFilled.length; i++) {
+      if (!dateFilled[i]) data.push({ date: i + 1, income: 0, expense: 0 });
+    }
+    data.sort((a, b) => a.date - b.date);
+    return res.status(StatusCodes.OK).json({ result: data });
+  } else return res.status(StatusCodes.OK).json({ result: [] });
 };
