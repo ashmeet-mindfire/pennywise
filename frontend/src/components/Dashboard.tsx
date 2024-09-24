@@ -24,16 +24,16 @@ const Dashboard = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full grid grid-cols-3">
-        <div className="text-center">
+      <div className="w-full grid grid-cols-1  md:grid-cols-3 gap-4">
+        <div className="text-center p-4 rounded-lg border shadow-lg">
           <p className="text-xl font-semibold">Expenses</p>
           <p className="text-4xl font-bold text-red-500">{user?.totalExpenses}</p>
         </div>
-        <div className="text-center">
+        <div className="text-center p-4 rounded-lg border shadow-lg">
           <p className="text-xl font-semibold">Income</p>
           <p className="text-4xl font-bold text-green-500">{user?.totalIncome}</p>
         </div>
-        <div className="text-center">
+        <div className="text-center p-4 rounded-lg border shadow-lg">
           <p className="text-xl font-semibold">Savings</p>
           <p className="text-4xl font-bold text-orange-500">
             {Math.max(0, (user?.totalIncome ?? 0) - (user?.totalExpenses ?? 0))}
@@ -41,9 +41,9 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="flex gap-8 mt-10">
-        <div className="w-full">
-          <div className="flex justify-between mb-4">
-            <h2 className="text-2xl font-semibold">Recent Transactions</h2>
+        <div className="w-full border rounded-lg p-4 shadow-lg">
+          <div className="flex justify-between mb-4 items-center">
+            <h2 className="text-xl md:text-2xl font-semibold">Recent Transactions</h2>
             <AddTransactionDialog />
           </div>
           <ScrollArea className="h-[250px] px-4">
@@ -52,9 +52,9 @@ const Dashboard = () => {
         </div>
         {/* <ExpenseCalendar /> */}
       </div>
-      <div className="flex gap-4 min-h-[300px] mt-10">
-        <div className="w-full border rounded p-4">
-          <p className="text-3xl font-semibold w-full border-b pb-3">Expenses By Category</p>
+      <div className="flex flex-col md:flex-row gap-4 md:min-h-[300px] mt-10">
+        <div className="w-full border rounded-lg p-4 shadow-lg">
+          <p className="text-2xl md:text-3xl font-semibold w-full border-b pb-3">Expenses By Category</p>
           <div className="mt-4">
             {categoryExpenses
               .filter((category) => category.type === "expense")
@@ -76,8 +76,8 @@ const Dashboard = () => {
               ))}
           </div>
         </div>
-        <div className="w-full border rounded p-4">
-          <p className="text-3xl font-semibold w-full border-b pb-3">Incomes By Category</p>
+        <div className="w-full border rounded-lg p-4 shadow-lg">
+          <p className="text-2xl md:text-3xl font-semibold w-full border-b pb-3">Incomes By Category</p>
           <div className="mt-4">
             {categoryExpenses
               .filter((category) => category.type === "income")
@@ -100,7 +100,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10">
+      <div className="mt-10 border rounded-lg p-4 shadow-lg">
         <Chart />
       </div>
     </div>

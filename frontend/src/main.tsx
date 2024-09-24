@@ -8,12 +8,17 @@ import TransactionProvider from "./context/TransactionContext.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TransactionsPage from "./routes/transactions/TransactionsPage.tsx";
 import DashboardPage from "./routes/dashboard/DashboardPage.tsx";
+import HomePage from "./components/HomePage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
       {
         path: "/dashboard",
         element: <DashboardPage />,

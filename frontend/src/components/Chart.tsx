@@ -67,17 +67,20 @@ export function Chart() {
 
   return (
     <div className="w-full">
-      <p className="text-4xl font-semibold mb-8">History</p>
-      <div className="w-full flex justify-end gap-4 mb-4">
-        <div className="w-fit">
-          <TimePeriodDropdown setTimePeriod={setTimePeriod} timePeriod={timePeriod} />
-        </div>
-        {timePeriod !== "" && (
+      <div className=" mb-8 border-b pb-4 flex justify-between items-center">
+        <p className="text-2xl md:text-4xl font-semibold">History</p>
+        <div className="w-full flex justify-end gap-4">
           <div className="w-fit">
-            <ValueDropdown items={items} setValue={setValue} value={value} />
+            <TimePeriodDropdown setTimePeriod={setTimePeriod} timePeriod={timePeriod} />
           </div>
-        )}
+          {timePeriod !== "" && (
+            <div className="w-fit">
+              <ValueDropdown items={items} setValue={setValue} value={value} />
+            </div>
+          )}
+        </div>
       </div>
+
       <ChartContainer config={chartConfig} className="h-[400px] w-full">
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />

@@ -18,7 +18,7 @@ const RecentTransactionsTable = () => {
       <TableHeader>
         <TableRow>
           <TableHead>Title</TableHead>
-          <TableHead>Description</TableHead>
+          <TableHead className="hidden md:block">Description</TableHead>
           <TableHead>Amount</TableHead>
           <TableHead>Date</TableHead>
           <TableHead className="text-right">Type</TableHead>
@@ -29,7 +29,7 @@ const RecentTransactionsTable = () => {
           {transactions.map((transaction) => (
             <TableRow key={transaction._id}>
               <TableCell className="font-medium">{transaction.title}</TableCell>
-              <TableCell>{transaction.desc}</TableCell>
+              <TableCell className="hidden md:block">{transaction.desc}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
               <TableCell>{formatDateTime(new Date(transaction.date_time))}</TableCell>
               <TableCell
