@@ -36,6 +36,10 @@ export interface ITransactionContext {
   transactions: ITransactionDTO[];
   handleGetTransactions: (limit?: number) => void;
   transactionsLoading: boolean;
+  categoryExpenses: ICategoryExpensesDTO[];
+  handleGetCategoryExpenses: () => void;
+  chartData: IChartData[];
+  handleGetChartData: (timePeriod: string, value: string) => void;
 }
 
 export interface CategoryDTO {
@@ -47,8 +51,8 @@ export interface CategoryDTO {
 
 export interface ICategoryExpensesDTO {
   name: string;
-  amount: number;
-  type: string;
+  expense_amount: number;
+  income_amount: number;
 }
 
 export interface IChartData {

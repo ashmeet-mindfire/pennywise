@@ -35,8 +35,8 @@ export function LoginRegisterTabs({ closeDialog }: { closeDialog: () => void }) 
     const toastId = toast.loading("Logging In");
     registerUser(name, email, password)
       .then(async () => {
-        toast.success("Successfully registered", { id: toastId });
         const success = await login(email, password);
+        toast.remove(toastId);
         if (success) closeDialog();
       })
       .catch((err) => {

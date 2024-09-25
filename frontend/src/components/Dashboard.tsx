@@ -1,25 +1,19 @@
 import { UserContext } from "@/context/userContext";
-import { ICategoryExpensesDTO, IUserContext } from "@/lib/types";
-import { useContext, useEffect, useState } from "react";
+import { ITransactionContext, IUserContext } from "@/lib/types";
+import { useContext, useEffect } from "react";
 import RecentTransactionsTable from "./RecentTransactionsTable";
 import AddTransactionDialog from "./AddTransactionDialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getCategoryExpenses } from "@/api/categories";
 import { Progress } from "@/components/ui/progress";
 import { Chart } from "./Chart";
+import { TransactionContext } from "@/context/TransactionContext";
 
 const Dashboard = () => {
-  const [categoryExpenses, setCategoryExpenses] = useState<ICategoryExpensesDTO[]>([]);
-
   const { user } = useContext(UserContext) as IUserContext;
+  const { categoryExpenses, handleGetCategoryExpenses } = useContext(TransactionContext) as ITransactionContext;
 
   useEffect(() => {
-    getCategoryExpenses(user?.id as string)
-      .then((res) => {
-        setCategoryExpenses(res?.data?.category_with_expenses);
-      })
-      .catch((err) => console.log(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    handleGetCategoryExpenses();
   }, []);
 
   return (
@@ -56,47 +50,52 @@ const Dashboard = () => {
         <div className="w-full border rounded-lg p-4 shadow-lg">
           <p className="text-2xl md:text-3xl font-semibold w-full border-b pb-3">Expenses By Category</p>
           <div className="mt-4">
-            {categoryExpenses
-              .filter((category) => category.type === "expense")
-              .map((categoryExpense, idx) => (
+            {categoryExpenses.map((categoryExpense, idx) =>
+              categoryExpense.expense_amount ? (
                 <div key={idx} className="mb-2">
                   <div className="flex gap-4 w-full justify-between items-center">
                     <p className="">
-                      {categoryExpense.name} ({Math.floor((categoryExpense.amount / (user?.totalExpenses ?? 1)) * 100)}%)
+                      {categoryExpense.name} ({Math.floor((categoryExpense.expense_amount / (user?.totalExpenses ?? 1)) * 100)}
+                      %)
                     </p>
-                    <p className="text-lg font-semibold">{categoryExpense.amount}</p>
+                    <p className="text-lg font-semibold">{categoryExpense.expense_amount}</p>
                   </div>
                   <div className="mt-1">
                     <Progress
                       indicatorColor="bg-red-500"
-                      value={Math.floor((categoryExpense.amount / (user?.totalExpenses ?? 1)) * 100)}
+                      value={Math.floor((categoryExpense.expense_amount / (user?.totalExpenses ?? 1)) * 100)}
                     />
                   </div>
                 </div>
-              ))}
+              ) : (
+                <></>
+              )
+            )}
           </div>
         </div>
         <div className="w-full border rounded-lg p-4 shadow-lg">
           <p className="text-2xl md:text-3xl font-semibold w-full border-b pb-3">Incomes By Category</p>
           <div className="mt-4">
-            {categoryExpenses
-              .filter((category) => category.type === "income")
-              .map((categoryExpense, idx) => (
+            {categoryExpenses.map((categoryExpense, idx) =>
+              categoryExpense.income_amount ? (
                 <div key={idx} className="mb-2">
                   <div className="flex gap-4 w-full justify-between items-center">
                     <p className="">
-                      {categoryExpense.name} ({Math.floor((categoryExpense.amount / (user?.totalIncome ?? 1)) * 100)}%)
+                      {categoryExpense.name} ({Math.floor((categoryExpense.income_amount / (user?.totalIncome ?? 1)) * 100)}%)
                     </p>
-                    <p className="text-lg font-semibold">{categoryExpense.amount}</p>
+                    <p className="text-lg font-semibold">{categoryExpense.income_amount}</p>
                   </div>
                   <div className="mt-1">
                     <Progress
                       indicatorColor="bg-green-500"
-                      value={Math.floor((categoryExpense.amount / (user?.totalIncome ?? 1)) * 100)}
+                      value={Math.floor((categoryExpense.income_amount / (user?.totalIncome ?? 1)) * 100)}
                     />
                   </div>
                 </div>
-              ))}
+              ) : (
+                <></>
+              )
+            )}
           </div>
         </div>
       </div>

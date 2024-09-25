@@ -22,6 +22,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
       if (resUser) {
         localStorage.setItem("user", JSON.stringify(resUser));
+        localStorage.setItem("token", data.token);
         const user: IUser = {
           id: resUser._id,
           name: resUser.name,

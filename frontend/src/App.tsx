@@ -15,8 +15,10 @@ function App() {
   return (
     <div className="w-full min-h-screen">
       <Navbar />
-      <div className="py-10 px-10 md:px-24 max-w-[1200px] md:flex md:flex-col md:items-center">
-        <Outlet />
+      <div className=" md:px-24 py-10 px-10 md:flex md:flex-col md:items-center">
+        <div className="w-full max-w-[1200px] ">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

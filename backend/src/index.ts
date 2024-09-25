@@ -9,6 +9,7 @@ import transactionRouter from "./routes/transactionRoutes";
 import categoryRouter from "./routes/categoryRoutes";
 import connectDB from "./db/connect";
 import swaggerDocs from "./swagger";
+import { authMiddleware } from "./middleware/auth";
 
 const app = express();
 const port = 5000;
@@ -17,8 +18,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/transaction", transactionRouter);
-app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/transaction", authMiddleware, transactionRouter);
+app.use("/api/v1/category", authMiddleware, categoryRouter);
 
 const start = async () => {
   try {

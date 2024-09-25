@@ -25,14 +25,22 @@ export const getExpensesByCategory = async (req: Request, res: Response) => {
   if (!user_id) return paramsNotFound("user_id", res);
 
   const transactions = await TransactionModel.find({ user_id });
-  const categoryWithExpenses: { name: string; amount: number; type: string }[] = [];
+  const categoryWithExpenses: { name: string; expense_amount: number; income_amount: number }[] = [];
 
   transactions.map((transaction) => {
+    let isPresent = true;
     const transactionObj = transaction.toObject();
-    const categoryObj = categoryWithExpenses.find((cat) => cat.name === transactionObj.category);
+    let categoryObj = categoryWithExpenses.find((cat) => cat.name === transactionObj.category);
 
-    if (categoryObj) categoryObj.amount += transactionObj.amount;
-    else categoryWithExpenses.push({ name: transactionObj.category, amount: transactionObj.amount, type: transactionObj.type });
+    if (!categoryObj) {
+      isPresent = false;
+      categoryObj = { name: transactionObj.category, expense_amount: 0, income_amount: 0 };
+    }
+
+    if (transactionObj.type === "expense") categoryObj.expense_amount += transactionObj.amount;
+    else categoryObj.income_amount += transactionObj.amount;
+
+    if (!isPresent) categoryWithExpenses.push(categoryObj);
   });
 
   return res

@@ -27,7 +27,9 @@ const AddTransactionDialog = () => {
   const [date, setDate] = useState<Date>();
 
   const { user, getUserDetails } = useContext(UserContext) as IUserContext;
-  const { handleGetTransactions } = useContext(TransactionContext) as ITransactionContext;
+  const { handleGetTransactions, handleGetCategoryExpenses, handleGetChartData } = useContext(
+    TransactionContext
+  ) as ITransactionContext;
 
   const resetData = () => {
     setTitle("");
@@ -47,6 +49,8 @@ const AddTransactionDialog = () => {
         resetData();
         closeDialog();
         handleGetTransactions();
+        handleGetCategoryExpenses();
+        handleGetChartData("year", "2024");
         getUserDetails();
       })
       .catch((err) => {

@@ -2,14 +2,13 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useContext, useEffect, useState } from "react";
-import { IChartData, IUserContext } from "@/lib/types";
-import { getChartData } from "@/api/transactions";
-import { ITEMS_MONTHS, ITEMS_YEARS, MONTH } from "@/constants/constants";
+import { ITransactionContext } from "@/lib/types";
+import { ITEMS_MONTHS, ITEMS_YEARS } from "@/constants/constants";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { ChartLegend, ChartLegendContent } from "@/components/ui/chart";
-import { UserContext } from "@/context/userContext";
 import TimePeriodDropdown from "./TimePeriodDropdown";
 import ValueDropdown from "./ValueDropdown";
+import { TransactionContext } from "@/context/TransactionContext";
 
 const chartConfig = {
   expense: {
@@ -23,12 +22,11 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function Chart() {
-  const [chartData, setChartData] = useState<IChartData[]>([]);
   const [timePeriod, setTimePeriod] = useState("");
   const [value, setValue] = useState("");
   const [items, setItems] = useState<string[]>([]);
 
-  const { user } = useContext(UserContext) as IUserContext;
+  const { chartData, handleGetChartData } = useContext(TransactionContext) as ITransactionContext;
 
   useEffect(() => {
     setTimePeriod("year");
@@ -36,21 +34,7 @@ export function Chart() {
   }, []);
 
   useEffect(() => {
-    getChartData(timePeriod, value, user?.id as string).then((data) => {
-      const newChartData: IChartData[] = [];
-      if (timePeriod === "year") {
-        data.data.result.map((obj: any) => {
-          newChartData.push({ expense: obj.expense, income: obj.income, xAxisValue: MONTH[obj.month as keyof typeof MONTH] });
-        });
-      }
-
-      if (timePeriod === "month") {
-        data.data.result.map((obj: any) => {
-          newChartData.push({ expense: obj.expense, income: obj.income, xAxisValue: obj.date.toString() });
-        });
-      }
-      setChartData(newChartData);
-    });
+    handleGetChartData(timePeriod, value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
