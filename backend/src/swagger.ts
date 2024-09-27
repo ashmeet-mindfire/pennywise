@@ -10,6 +10,17 @@ const options: swaggerJsDoc.Options = {
       title: "Pennywise",
       version,
     },
+    components: {
+      securitySchemes: {
+        Authorization: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          value: "Bearer <JWT token here>",
+        },
+      },
+    },
+    security: [{ Authorization: [] }],
   },
   apis: ["./src/routes/*.ts", "./src/db/*.ts"],
 };

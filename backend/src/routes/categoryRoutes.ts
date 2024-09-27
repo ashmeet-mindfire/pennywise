@@ -8,13 +8,6 @@ const router = express.Router();
  *   get:
  *     tags:
  *       - Category
- *     parameters:
- *       - in: query
- *         name: user_id
- *         required: true
- *         schema:
- *           type: string
- *         description: User Id whose categories need to be fetched
  *     description: Returns a list of categories!
  *     responses:
  *       200:
@@ -36,11 +29,8 @@ router.get("/", getCategories);
  *           type: object
  *           required:
  *             - name
- *             - user_id
  *           properties:
  *             name:
- *               type: string
- *             user_id:
  *               type: string
  *         description: Category Details
  *     description: Create a new category
@@ -56,13 +46,6 @@ router.post("/", addCategory);
  *   get:
  *     tags:
  *       - Category
- *     parameters:
- *       - in: query
- *         name: user_id
- *         required: true
- *         schema:
- *           type: string
- *         description: User Id whose categories need to be fetched
  *     description: Returns a list of categories and their expenses
  *     responses:
  *       200:

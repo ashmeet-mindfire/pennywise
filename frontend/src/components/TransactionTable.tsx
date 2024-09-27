@@ -1,10 +1,9 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { TransactionContext } from "@/context/TransactionContext";
-import { ITransactionContext, ITransactionDTO, IUserContext } from "@/lib/types";
+import { ITransactionContext, ITransactionDTO } from "@/lib/types";
 import { useContext, useEffect, useState } from "react";
 import EditTransactionDialog from "./EditTransactionDialog";
 import { Trash2 } from "lucide-react";
-import { UserContext } from "@/context/userContext";
 import { deleteTransaction } from "@/api/transactions";
 import toast from "react-hot-toast";
 import { formatDateTime } from "@/lib/utils";
@@ -13,8 +12,6 @@ const TransactionsTable = () => {
   const { transactions, transactionsLoading, handleGetTransactions } = useContext(TransactionContext) as ITransactionContext;
   const [editTransactionData, setEditTransactionData] = useState<ITransactionDTO | null>(null);
 
-  const { user } = useContext(UserContext) as IUserContext;
-
   useEffect(() => {
     handleGetTransactions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -22,7 +19,7 @@ const TransactionsTable = () => {
 
   const handleDelete = (transactionId: string) => {
     const toastId = toast.loading("Deleting transaction");
-    deleteTransaction(transactionId, user?.id as string)
+    deleteTransaction(transactionId)
       .then((res) => {
         toast.success(res?.data?.msg ?? "Transaction deleted successfully", { id: toastId });
         handleGetTransactions();

@@ -24,6 +24,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  console.log(email, password);
   if (!email || !password)
     return res.status(StatusCodes.BAD_REQUEST).json({ success: false, msg: "Please provide email & password" });
 

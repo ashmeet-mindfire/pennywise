@@ -1,10 +1,10 @@
 import { ADD_TRANSACTIONS, GET_CHART_DATA, GET_TRANSACTIONS, UPDATE_TRANSACTIONS } from "@/constants/urls";
 import axios from "axios";
 
-export const getTransactions = (userId: string, limit?: number) => {
+export const getTransactions = (limit?: number) => {
   return axios.get(GET_TRANSACTIONS, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    params: { user_id: userId, limit },
+    params: { limit },
   });
 };
 
@@ -50,16 +50,16 @@ export const updateTransaction = (
   );
 };
 
-export const deleteTransaction = (transaction_id: string, user_id: string) => {
+export const deleteTransaction = (transaction_id: string) => {
   return axios.delete(GET_TRANSACTIONS, {
-    params: { transaction_id, user_id },
+    params: { transaction_id },
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };
 
-export const getChartData = (time_period: string, value: string, user_id: string) => {
+export const getChartData = (time_period: string, value: string) => {
   return axios.get(GET_CHART_DATA, {
-    params: { time_period, value, user_id },
+    params: { time_period, value },
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };

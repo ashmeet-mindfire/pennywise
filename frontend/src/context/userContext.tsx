@@ -18,7 +18,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       toast.success("Successfully logged in", { id: toastId });
       success = true;
       const resUser: IUserDTO = data?.user;
-      fetchCategories(resUser._id);
+      fetchCategories();
 
       if (resUser) {
         localStorage.setItem("user", JSON.stringify(resUser));
@@ -59,8 +59,8 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     });
   };
 
-  const fetchCategories = (userId: string) => {
-    getCategories(userId).then((res) => {
+  const fetchCategories = () => {
+    getCategories().then((res) => {
       const newCategories: string[] = [];
       res?.data?.categories.map((category: CategoryDTO) => newCategories.push(category.name));
       setCategories(newCategories);

@@ -14,11 +14,11 @@ const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [categoryExpenses, setCategoryExpenses] = React.useState<ICategoryExpensesDTO[]>([]);
   const [chartData, setChartData] = React.useState<IChartData[]>([]);
 
-  const { user, getUserDetails } = React.useContext(UserContext) as IUserContext;
+  const { getUserDetails } = React.useContext(UserContext) as IUserContext;
 
   const handleGetTransactions = (limit?: number) => {
     setTransactionsLoading(true);
-    getTransactions(user?.id as string, limit)
+    getTransactions(limit)
       .then((res) => {
         setTransactions(res?.data?.transactions);
         getUserDetails();
@@ -31,7 +31,7 @@ const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const handleGetCategoryExpenses = () => {
-    getCategoryExpenses(user?.id as string)
+    getCategoryExpenses()
       .then((res) => {
         setCategoryExpenses(res?.data?.category_with_expenses);
       })
@@ -39,7 +39,7 @@ const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const handleGetChartData = (timePeriod: string, value: string) => {
-    getChartData(timePeriod, value, user?.id as string).then((data) => {
+    getChartData(timePeriod, value).then((data) => {
       const newChartData: IChartData[] = [];
       if (timePeriod === "year") {
         data.data.result.map((obj: any) => {

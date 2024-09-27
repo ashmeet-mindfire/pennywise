@@ -13,15 +13,11 @@ const router = express.Router();
  * @openapi
  * /api/v1/transaction:
  *   get:
+ *     security:
+ *       - Authorization: []
  *     tags:
  *       - Transactions
  *     parameters:
- *       - in: query
- *         name: user_id
- *         required: true
- *         schema:
- *           type: string
- *         description: User Id whose transactions need to be fetched
  *       - in: query
  *         name: limit
  *         schema:
@@ -126,11 +122,6 @@ router.put("/", updateTransaction);
  *     tags:
  *       - Transactions
  *     parameters:
- *       - in: query
- *         name: user_id
- *         required: true
- *         schema:
- *           type: string
  *       - in: query
  *         name: transaction_id
  *         required: true

@@ -13,7 +13,8 @@ export const getCategories = async (req: Request, res: Response) => {
 };
 
 export const addCategory = async (req: Request, res: Response) => {
-  const { name, user_id } = req.body;
+  const { name } = req.body;
+  const { user_id } = req.query;
   if (!name || !user_id) return paramsNotFound("name/user_id", res);
 
   const category = await CategoryModel.create({ name, user_id, is_created_by_user: true });
