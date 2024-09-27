@@ -5,12 +5,17 @@ Pennywise is a digital tool designed to help users manage their personal finance
 ## Setup
 
 Clone the repository
+
 run `npm install` in both frontend & backend directory
+
 Add .env in backend directory with the following key/value
+
 MONGO_URI (This would be obtained via running local server of mongodb or from mongodb atlas)
-JWT_SECRET (Random hash key);
+
+JWT_SECRET (Random hash key)
 
 run `npm start` in backend
+
 run `npm run dev` in frontend
 
 ## Requirements
