@@ -27,6 +27,8 @@ run `npm run dev` in frontend
 ![image](https://github.com/user-attachments/assets/4fb1fc79-918c-4ad6-99d2-37d4632311af)
 ![image](https://github.com/user-attachments/assets/5abd8ff5-4b69-426b-abaf-77e98d39cc62)
 
+https://drive.google.com/file/d/12Qn2U0fvGXuaiiBCj-bvwulsVvLmVQDt/view?usp=sharing
+
 
 ## Requirements
 
